@@ -1,0 +1,21 @@
+<div class="shell" [class.sidebar-collapsed]="layoutService.sidebarCollapsed()">
+
+  @if (!layoutService.sidebarCollapsed()) {
+    <div class="sidebar-backdrop" (click)="layoutService.closeSidebar()"></div>
+  }
+
+  <app-sidebar
+    [notes]="notes()"
+    [collapsed]="layoutService.sidebarCollapsed()"
+    [currentUser]="authService.currentUser()"
+    [isDarkMode]="themeService.isDarkMode()"
+    (toggleSidebar)="layoutService.toggleSidebar()"
+    (toggleTheme)="themeService.toggleTheme()"
+    (logout)="authService.logout()"
+    (createNote)="createNote()"
+  />
+
+  <main class="shell-content">
+    <router-outlet />
+  </main>
+</div>

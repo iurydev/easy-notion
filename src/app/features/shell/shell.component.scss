@@ -1,0 +1,77 @@
+// ── Layout base (LG: ≥ 1024px) ───────────────────────
+.shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-primary);
+  position: relative;
+
+  &.sidebar-collapsed {
+    app-sidebar {
+      width: 56px;
+      min-width: 56px;
+    }
+  }
+}
+
+.shell-content {
+  flex: 1;
+  min-width: 0; // evita overflow no flex
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Backdrop (visível apenas no mobile quando sidebar está aberta) ──
+.sidebar-backdrop {
+  display: none;
+}
+
+// ── MD: Tablet (768px – 1023px) ──────────────────────
+@media (min-width: 768px) and (max-width: 1023px) {
+  .shell {
+    &.sidebar-collapsed {
+      app-sidebar {
+        width: 56px;
+        min-width: 56px;
+      }
+    }
+  }
+}
+
+// ── SM: Mobile (≤ 767px) ─────────────────────────────
+@media (max-width: 767px) {
+  .shell {
+    display: block; // sidebar vira overlay, não ocupa espaço no layout
+
+    // No mobile, a classe sidebar-collapsed no shell não afeta a sidebar
+    // (a sidebar tem seu próprio controle via transform)
+    &.sidebar-collapsed {
+      app-sidebar {
+        width: 100% !important;
+        min-width: 100% !important;
+      }
+    }
+  }
+
+  .shell-content {
+    width: 100%;
+    height: 100vh;
+  }
+
+  // Backdrop: overlay escuro atrás da sidebar quando aberta no mobile
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: backdropIn 0.25s ease forwards;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @keyframes backdropIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}

@@ -1,0 +1,160 @@
+<aside class="sidebar" [class.collapsed]="collapsed()">
+  <!-- Header -->
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <img src="assets/easy-notion-logo.png" alt="Easy Notion logo" class="brand-icon" />
+      @if (!collapsed()) {
+        <span class="brand-name">Easy Notion</span>
+      }
+    </div>
+
+    <!-- Botão só existe na sidebar quando ela está expandida -->
+    @if (!collapsed()) {
+      <button
+        mat-icon-button
+        class="collapse-btn"
+        matTooltip="Recolher sidebar"
+        matTooltipPosition="right"
+        (click)="toggleSidebar.emit()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+  </div>
+
+  <!-- Nova Nota -->
+  @if (!collapsed()) {
+    <div class="sidebar-actions">
+      <button mat-flat-button class="new-note-btn" (click)="createNote.emit()">
+        <mat-icon>add</mat-icon>
+        Nova nota
+      </button>
+    </div>
+
+    <!-- Busca -->
+    <div class="sidebar-search">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        class="search-input"
+        type="text"
+        placeholder="Buscar notas..."
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event)"
+      />
+      @if (searchQuery()) {
+        <button mat-icon-button class="clear-search" (click)="searchQuery.set('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </div>
+  } @else {
+    <div class="sidebar-actions-collapsed">
+      <button
+        mat-icon-button
+        matTooltip="Nova nota"
+        matTooltipPosition="right"
+        (click)="createNote.emit()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  }
+
+  <!-- Lista de Notas -->
+  <div class="notes-list">
+    @if (!collapsed()) {
+      @if (filteredNotes().length === 0) {
+        <div class="empty-notes">
+          @if (searchQuery()) {
+            <mat-icon>search_off</mat-icon>
+            <span>Nenhuma nota encontrada</span>
+          } @else {
+            <mat-icon>note_add</mat-icon>
+            <span>Nenhuma nota ainda.<br>Crie sua primeira nota!</span>
+          }
+        </div>
+      } @else {
+        @for (note of filteredNotes(); track note.id) {
+          <a
+            class="note-item"
+            [routerLink]="['/notes', note.id]"
+            routerLinkActive="active"
+          >
+            <div class="note-item-title">{{ note.title || 'Sem título' }}</div>
+            <div class="note-item-meta">
+              <span class="note-preview">{{ getPreview(note.content) }}</span>
+              <span class="note-date">{{ formatDate(note.updatedAt) }}</span>
+            </div>
+          </a>
+        }
+      }
+    } @else {
+      @for (note of notes(); track note.id) {
+        <a
+          class="note-item-icon"
+          [routerLink]="['/notes', note.id]"
+          routerLinkActive="active"
+          [matTooltip]="note.title || 'Sem título'"
+          matTooltipPosition="right"
+        >
+          <mat-icon>description</mat-icon>
+        </a>
+      }
+    }
+  </div>
+
+  <!-- Footer: Usuário + Controles -->
+  <div class="sidebar-footer">
+    <mat-divider />
+
+    @if (!collapsed()) {
+      <div class="footer-controls">
+        <button
+          mat-icon-button
+          [matTooltip]="isDarkMode() ? 'Modo claro' : 'Modo escuro'"
+          (click)="toggleTheme.emit()"
+        >
+          <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+
+        @if (currentUser()) {
+          <div class="user-info">
+            <img
+              [src]="currentUser()!.photoURL || 'assets/default-avatar.png'"
+              [alt]="currentUser()!.displayName || 'Usuário'"
+              class="user-avatar"
+            />
+            <span class="user-name">{{ (currentUser()?.displayName ?? '').split(' ')[0] }}</span>
+          </div>
+        }
+
+        <button
+          mat-icon-button
+          matTooltip="Sair"
+          (click)="logout.emit()"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    } @else {
+      <div class="footer-controls-collapsed">
+        <button
+          mat-icon-button
+          [matTooltip]="isDarkMode() ? 'Modo claro' : 'Modo escuro'"
+          matTooltipPosition="right"
+          (click)="toggleTheme.emit()"
+        >
+          <mat-icon>{{ isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          matTooltip="Sair"
+          matTooltipPosition="right"
+          (click)="logout.emit()"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+</aside>
