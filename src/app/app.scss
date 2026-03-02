@@ -1,0 +1,147 @@
+@use '@angular/material' as mat;
+
+// ── Material Theme ────────────────────────────────────
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+// ── Fontes ────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+// ── Tema Claro (padrão) ───────────────────────────────
+:root {
+  // Cores de fundo
+  --bg-primary:   #ffffff;
+  --bg-sidebar:   #f7f7f5;
+  --bg-surface:   #ffffff;
+  --bg-hover:     #f0f0ee;
+  --bg-active:    #e8e8e4;
+
+  // Cores de texto
+  --text-primary:   #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --text-tertiary:  #a8a8a8;
+
+  // Bordas e divisores
+  --border-color: #e0e0dc;
+
+  // Acento
+  --accent-color: #2563eb;
+
+  // Material Dialog
+  --mat-dialog-container-color: #ffffff;
+  --mat-dialog-supporting-text-color: #1a1a1a;
+}
+
+// ── Tema Escuro ───────────────────────────────────────
+.dark-mode {
+  color-scheme: dark;
+
+  --bg-primary:   #191919;
+  --bg-sidebar:   #111111;
+  --bg-surface:   #1f1f1f;
+  --bg-hover:     #2a2a2a;
+  --bg-active:    #333333;
+
+  --text-primary:   #e8e8e6;
+  --text-secondary: #9b9b9b;
+  --text-tertiary:  #5a5a5a;
+
+  --border-color: #2e2e2e;
+
+  --accent-color: #3b82f6;
+
+  --mat-dialog-container-color: #1f1f1f;
+  --mat-dialog-supporting-text-color: #e8e8e6;
+
+  // Override Material dark
+  --mat-sys-surface: #191919;
+  --mat-sys-on-surface: #e8e8e6;
+  --mat-sys-surface-container: #1f1f1f;
+
+  .mat-mdc-dialog-container {
+    background: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
+  }
+
+  .mat-mdc-menu-panel {
+    background: var(--bg-surface) !important;
+  }
+
+  .mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #2a2a2a;
+    --mdc-snackbar-supporting-text-color: #e8e8e6;
+  }
+
+  .mdc-dialog__surface {
+    background: var(--bg-surface) !important;
+  }
+}
+
+// ── Reset e Base ──────────────────────────────────────
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ── Scrollbar Global ──────────────────────────────────
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--text-tertiary);
+  }
+}
+
+// ── Material Overrides ────────────────────────────────
+.mat-mdc-button, .mat-mdc-icon-button {
+  --mdc-icon-button-icon-color: var(--text-primary);
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  background: var(--bg-surface) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--border-color);
+}
+
+.mat-mdc-snack-bar-container {
+  border-radius: 10px !important;
+}
+
+// Tooltip
+.mat-mdc-tooltip {
+  font-size: 12px !important;
+}
+
+// Divider
+.mat-divider {
+  border-color: var(--border-color) !important;
+}
