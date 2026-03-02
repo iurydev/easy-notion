@@ -1,0 +1,28 @@
+.dialog-container {
+    padding: 8px 0 0;
+  }
+  .dialog-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: var(--text-primary);
+  }
+  mat-icon.danger { color: #f44336; }
+  .dialog-content p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 8px !important;
+  }
+  .danger-btn {
+    background: #f44336 !important;
+    color: white !important;
+  }
