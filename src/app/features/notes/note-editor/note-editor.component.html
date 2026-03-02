@@ -1,0 +1,78 @@
+@if (isLoading()) {
+<div class="editor-loading">
+  <mat-spinner diameter="40" />
+</div>
+} @else if (note()) {
+<div class="editor-wrapper">
+
+    <!-- Topbar -->
+    <header class="editor-topbar">
+      <div class="topbar-left">
+
+        <!-- Botão de expandir sidebar: desliza da esquerda quando sidebar recolhe -->
+        <div class="topbar-sidebar-toggle" [class.visible]="layoutService.sidebarCollapsed()">
+          <button
+            mat-icon-button
+            matTooltip="Expandir sidebar"
+            matTooltipPosition="below"
+            (click)="layoutService.toggleSidebar()"
+          >
+            <mat-icon>menu_open</mat-icon>
+          </button>
+        </div>
+
+        @if (isSaving()) {
+          <span class="save-status saving">
+            <mat-icon>sync</mat-icon>
+            <span class="save-label">Salvando...</span>
+          </span>
+        } @else {
+          <span class="save-status saved">
+            <mat-icon>cloud_done</mat-icon>
+            <span class="save-label">Salvo</span>
+          </span>
+        }
+      </div>
+    <div class="topbar-right">
+      <!-- Upload de imagem -->
+      <label class="upload-btn mat-icon-button" [class.uploading]="isUploadingImage()"
+        [matTooltip]="isUploadingImage() ? 'Enviando...' : 'Inserir imagem no cursor'" for="image-upload">
+        @if (isUploadingImage()) {
+        <mat-spinner diameter="20" />
+        } @else {
+        <mat-icon>add_photo_alternate</mat-icon>
+        }
+        <input id="image-upload" type="file" accept="image/*" hidden [disabled]="isUploadingImage()"
+          (change)="onImageUpload($event)" />
+      </label>
+
+      <button mat-icon-button matTooltip="Excluir nota" class="delete-btn" (click)="confirmDelete()">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <div class="content-editor">
+    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar" />
+    <div class="overflow-area">
+      <!-- Título -->
+      <div class="editor-title-area">
+        <input class="note-title-input" type="text" placeholder="Título da nota" [ngModel]="title()"
+          (ngModelChange)="onTitleChange($event)" />
+      </div>
+
+      <!-- Editor de Texto -->
+      <div class="editor-body">
+        <ngx-editor [editor]="editor" [ngModel]="editorContent()" (ngModelChange)="onContentChange($event)"
+          placeholder="Comece a escrever sua nota..." />
+      </div>
+    </div>
+  </div>
+</div>
+} @else {
+<div class="editor-not-found">
+  <mat-icon>error_outline</mat-icon>
+  <h3>Nota não encontrada</h3>
+  <p>Esta nota pode ter sido excluída.</p>
+</div>
+}

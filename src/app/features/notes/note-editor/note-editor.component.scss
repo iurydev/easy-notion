@@ -1,0 +1,370 @@
+.editor-loading,
+.editor-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  color: var(--text-secondary);
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    opacity: 0.4;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+.editor-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.content-editor .overflow-area {
+  overflow: auto;
+  height: calc(100vh - 105px);
+}
+
+// ── Topbar ───────────────────────────────────────────
+.editor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px;
+  border-bottom: 1px solid var(--border-color);
+  min-height: 48px;
+  flex-shrink: 0;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.topbar-sidebar-toggle {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  // Estado padrão: oculto (sidebar expandida)
+  width: 0;
+  opacity: 0;
+  transition:
+    width 0.25s ease,
+    opacity 0.2s ease;
+
+  button {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    transform: translateX(-32px);
+    transition: transform 0.25s ease;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  // Estado visível: sidebar recolhida
+  &.visible {
+    width: 40px;
+    opacity: 1;
+
+    button {
+      transform: translateX(0);
+    }
+  }
+}
+
+.save-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 4px 10px;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &.saving {
+    color: var(--text-secondary);
+    background: var(--bg-hover);
+
+    mat-icon {
+      animation: spin 1.2s linear infinite;
+    }
+  }
+
+  &.saved {
+    color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background 0.15s, color 0.15s;
+
+  &:hover:not(.uploading) {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+
+  &.uploading {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.delete-btn {
+  color: var(--text-secondary) !important;
+  transition: color 0.15s !important;
+
+  &:hover {
+    color: #f44336 !important;
+  }
+}
+
+// ── Título ───────────────────────────────────────────
+.editor-title-area {
+  padding: 24px 40px 0;
+  flex-shrink: 0;
+}
+
+.note-title-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  caret-color: var(--accent-color);
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+}
+
+// ── Editor Body ──────────────────────────────────────
+.editor-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0 40px 24px;
+  margin-top: 16px;
+}
+
+// ── MD: Tablet (768px – 1023px) ──────────────────────
+@media (min-width: 768px) and (max-width: 1023px) {
+  .editor-title-area {
+    padding: 20px 28px 0;
+  }
+
+  .note-title-input {
+    font-size: 28px;
+  }
+
+  .editor-body {
+    padding: 0 28px 20px;
+  }
+}
+
+// ── SM: Mobile (≤ 767px) ─────────────────────────────
+@media (max-width: 767px) {
+  .editor-topbar {
+    padding: 6px 12px;
+    min-height: 52px;
+  }
+
+  .save-status {
+    padding: 4px 6px;
+    font-size: 11px;
+
+    .save-label {
+      display: none;
+    }
+  }
+
+  .editor-title-area {
+    padding: 16px 16px 0;
+  }
+
+  .note-title-input {
+    font-size: 22px;
+    letter-spacing: -0.3px;
+  }
+
+  .editor-body {
+    padding: 0 16px 16px;
+    margin-top: 12px;
+  }
+
+  // Toolbar do ngx-editor: permite scroll horizontal em telas pequenas
+  ::ng-deep .NgxEditor__MenuBar {
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  ::ng-deep .NgxEditor__Content {
+    font-size: 14px;
+
+    h1 { font-size: 22px; }
+    h2 { font-size: 19px; }
+    h3 { font-size: 17px; }
+  }
+
+  ::ng-deep .NgxEditor__Placeholder::before {
+    font-size: 14px !important;
+  }
+}
+
+// Override ngx-editor styles
+::ng-deep {
+  .NgxEditor__MenuBar {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 0 !important;
+    padding: 4px !important;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+
+  .NgxEditor__MenuItem {
+    border-radius: 6px !important;
+    transition: background 0.15s !important;
+
+    &:hover, &.NgxEditor__MenuItem--Active {
+      background: var(--bg-hover) !important;
+    }
+
+    .NgxEditor__MenuItem--Icon {
+      color: var(--text-primary) !important;
+    }
+  }
+
+  .NgxEditor__Dropdown {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+  }
+
+  .NgxEditor__Dropdown--Item {
+    color: var(--text-primary) !important;
+
+    &:hover {
+      background: var(--bg-hover) !important;
+    }
+  }
+
+  .NgxEditor {
+    background: transparent !important;
+    border: none !important;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .NgxEditor__Content {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-primary);
+    min-height: 200px;
+    padding: 8px 0;
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--text-primary);
+      margin: 16px 0 8px;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--accent-color);
+      padding-left: 16px;
+      margin: 8px 0;
+      color: var(--text-secondary);
+    }
+
+    pre {
+      background: var(--bg-hover);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 8px 0;
+    }
+
+    ul, ol {
+      padding-left: 24px;
+    }
+
+    a {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+  }
+
+  .NgxEditor__Placeholder::before {
+    color: var(--text-tertiary) !important;
+    font-size: 15px;
+  }
+}
